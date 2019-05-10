@@ -1,0 +1,130 @@
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['TPS', 'product_list'] %}
+
+{% block title %}TPS{% endblock %}
+{% block sub_title %}プラグイン一覧{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block stylesheet %}
+<style>
+.carousel-inner {
+    max-height: 
+}
+</style>
+{% endblock stylesheet %}
+
+{% block javascript %}
+<script>
+    $(function() {
+        {# $('.fetch').click(function() {
+            $.post('{{ url("tps_admin_fetch") }}', {product_id: $(this).data('id')}, function(res) {
+                alert(res.success);
+            });
+        }); #}
+        $('.cloneSubmit').click(function(eve) {
+            eve.preventDefault();
+            var _id = $(this).data('id');
+            $.post('{{ url("tps_admin_fetch") }}', $('#form-' + _id).serialize(), function(res) {
+                $('#editModal-' + _id).modal('hide');
+            })
+        });
+    })
+</script>
+{% endblock javascript %}
+
+{% block main %}
+    <form role="form" method="post">
+        {{ form_widget(form._token) }}
+        <div class="c-contentsArea__cols mb-0 pb-0">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{'TPS.product_info_from_nhqc' | trans}}</span></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 mb-2">
+                                    <input value="DM3" type="text" id="nhqc_search_sku" name="nhqc_search[sku]" required="required" class="form-control">
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="fw fh btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.search' | trans}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="c-contentsArea__cols">
+        <div class="c-primaryCol">
+            <div class="card rounded border-0 mb-4">
+                <div class="card-body">
+                    <div class="row">
+                    {% for p in products %}
+                        <div class="col-md-3">
+                            <h6 class="text-center">{{p.name}} - {{p.sku}}</h6>
+                            <div class="text-center">
+                                <button data-id="{{p.product_id}}" class="fetch btn btn-primary mt-2 mb-2" data-style="expand-right" data-toggle="modal" data-target="#editModal-{{p.product_id}}">
+                                    <span class="ladda-label">{{ 'TPS.import_product' | trans }}</span>
+                                    <span class="ladda-spinner"></span>
+                                </button>
+                            </div>
+                            <div class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% for img in p.images %}
+                                    <div class="carousel-item {{loop.index == 1 ? 'active' : 'a2'}}">
+                                        <img class="d-block w-100" src="{{img.url}}" alt="">
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- Modal -->
+                            {% set pId = 'P' ~ p.product_id %}
+                            <div class="modal fade" id="editModal-{{p.product_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <form id="form-{{p.product_id}}" action="#" method="POST">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">{{'TPS.clone_new_product' | trans}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="product_name">{{'admin.product.name' | trans}}</label>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Product name" value="{{p.name}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="product_price">{{'admin.product.price' | trans}}</label>
+                                                <input type="number" step="10000" class="form-control" name="price" id="price" placeholder="Product price" value="{{(p.info.price | split('.'))[0]}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="product_description">{{'admin.product.description_detail' | trans}}</label>
+                                                <textarea rows="10" type="text" class="form-control" id="description" name="description" placeholder="Product price">{{p.info.description}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            {% for img in p.images %}
+                                                <input type="hidden" name="images[]" value="{{img.url}}" />
+                                            {% endfor %}
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'TPS.common.cancle' | trans}}</button>
+                                            <button type="submit" class="btn btn-primary ladda-button cloneSubmit" data-id="{{p.product_id}}">
+                                                <span class="ladda-label">{{ 'TPS.submit_create_product' | trans }}</span>
+                                                <span class="ladda-spinner"></span>
+                                            </button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
