@@ -1,0 +1,16 @@
+magcube.menu_title: MagCube
+magcube.menu_product_list: Nhập sản phẩm
+magcube.import_product: Lấy sản phẩm
+magcube.product_info_from_nhqc: Thông tin sản phẩm
+magcube.clone_new_product: Tạo mới sản phẩm
+magcube.submit_create_product: Tạo mới
+magcube.common.cancle: Huỷ
+magcube.common.config: Cài đặt
+magcube.common.save: Lưu
+magcube.menu.config: Cài đặt
+magcube.attributes.name: Tên trang web
+magcube.attributes.username: Tên đăng nhập
+magcube.attributes.password: Mật khẩu
+magcube.attributes.soap_url: Đường dẫn SOAP
+magcube.title.index: Nhập sản phẩm
+magcube.errors.must_set_config: Vui lòng điền thông tin của SOAP API để sự dụng tiện ích

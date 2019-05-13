@@ -1,0 +1,12 @@
+{
+  "name": "ec-cube/Magcube",
+  "version": "1.0.0",
+  "description": "Magcube",
+  "type": "eccube-plugin",
+  "require": {
+    "ec-cube/plugin-installer": "~0.0.7"
+  },
+  "extra": {
+    "code": "Magcube"
+  }
+}

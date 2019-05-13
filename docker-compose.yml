@@ -10,7 +10,7 @@ services:
       - "5080:80"
       - "5081:443"
     volumes:
-      - ./plugins/TPS:/var/www/html/app/Plugin/TPS
+      - ./plugins/Magcube:/var/www/html/app/Plugin/Magcube
     networks:
       - backend
     depends_on:
